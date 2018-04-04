@@ -165,4 +165,5 @@ extension RSSelectionMenuDelegate {
     public func removeAllSelected() {
         selectedObjects.removeAll()
     }
+    
 }

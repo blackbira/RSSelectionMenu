@@ -26,7 +26,9 @@ import UIKit
 
 /// RSSelectionMenuController
 open class RSSelectionMenu<T>: UIViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate {
-
+    
+    public weak var delegate: RSSelectionMenuActionsDelegate?
+    
     // MARK: - Outlets
     public var tableView: RSSelectionTableView<T>?
     
@@ -172,19 +174,24 @@ open class RSSelectionMenu<T>: UIViewController, UIPopoverPresentationController
     /// Done button
     func setDoneButton() {
         let doneTitle = (self.rightBarButtonTitle != nil) ? self.rightBarButtonTitle! : doneButtonTitle
-        let doneButton = UIBarButtonItem(title: doneTitle, style: .done, target: self, action: #selector(doneButtonTapped))
+        let doneButton = UIBarButtonItem(title: doneTitle, style: .done, target: self, action: #selector(doneButtonTapped(button:)))
         navigationItem.rightBarButtonItem = doneButton
     }
     
-    @objc func doneButtonTapped() {
-        self.dismiss()
+    @objc func doneButtonTapped(button: UIBarButtonItem) {
+        delegate?.rsSelectionMenu(selectionMenu: self, didTouchRightBarItem: button)
+//        self.dismiss()
     }
     
     /// cancel button
     fileprivate func setCancelButton() {
         let cancelTitle = (self.leftBarButtonTitle != nil) ? self.leftBarButtonTitle! : cancelButtonTitle
-        let cancelButton = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(doneButtonTapped))
+        let cancelButton = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
+    }
+    
+    @objc func cancelButtonTapped() {
+        self.dismiss()
     }
     
     // MARK: - UIPopoverPresentationControllerDelegate
@@ -320,7 +327,7 @@ extension RSSelectionMenu {
             navigationBar.barTintColor = theme.color
             navigationBar.tintColor = theme.tintColor ?? UIColor.white
             navigationItem.title = theme.title
-            navigationBar.titleTextAttributes = theme.attributes
+//            navigationBar.titleTextAttributes = theme.attributes
         }
     }
 }

@@ -56,3 +56,8 @@ public let doneButtonTitle             = "Done"
 
 /// Colors
 public let defaultSearchBarTintColor   = UIColor(white: 0.9, alpha: 0.9)
+
+public protocol RSSelectionMenuActionsDelegate: class {
+    
+    func rsSelectionMenu<T>(selectionMenu: RSSelectionMenu<T>, didTouchRightBarItem barItem: UIBarButtonItem)
+}
